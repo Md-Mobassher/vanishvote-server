@@ -38,8 +38,6 @@ const getSinglePoll = async (id: string) => {
 const getPollResult = async (id: string) => {
   // Find the poll by ID and select the relevant fields
   const poll = await Poll.findById(id)
-    .select('question options expiresAt hideResults')
-    .lean()
 
   if (!poll) {
     throw new AppError(httpStatus.NOT_FOUND, 'This Poll is not found')
@@ -76,16 +74,7 @@ const getPollResult = async (id: string) => {
     )
   }
 
-  // Format the result to include question and options with votes
-  const formattedResult = {
-    question: poll.question,
-    options: poll.options.map((option) => ({
-      choice: option.choice,
-      votes: option.votes,
-    })),
-  }
-
-  return formattedResult
+  return poll
 }
 
 const voteAPoll = async (id: string, optionIndex: number) => {
