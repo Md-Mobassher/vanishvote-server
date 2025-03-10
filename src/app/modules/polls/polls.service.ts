@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import httpStatus from 'http-status'
 import AppError from '../../errors/AppError'
-import { IPoll } from './polls.interface'
+import { IComment, IPoll } from './polls.interface'
 import Poll from './polls.model'
 
 const createPoll = async (payload: IPoll) => {
@@ -89,7 +89,6 @@ const getPollResult = async (id: string) => {
 }
 
 const voteAPoll = async (id: string, optionIndex: number) => {
-  // Find the poll by ID
   const poll = await Poll.findById(id)
   if (!poll) {
     throw new AppError(httpStatus.NOT_FOUND, 'Poll not found')
@@ -105,13 +104,45 @@ const voteAPoll = async (id: string, optionIndex: number) => {
     throw new AppError(httpStatus.BAD_REQUEST, 'Invalid option index')
   }
 
-  // Increment the votes for the selected option
   poll.options[optionIndex].votes += 1
 
-  // Save the poll with the updated vote count
   const updatedPoll = await poll.save()
 
-  // Return the updated poll
+  return updatedPoll
+}
+
+const reactAPoll = async (id: string, reaction: string) => {
+  const poll = await Poll.findById(id)
+  if (!poll) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Poll not found')
+  }
+
+  if (reaction === '🔥') {
+    poll.reactions.fire += 1
+  } else if (reaction === '👍') {
+    poll.reactions.like += 1
+  }
+
+  const updatedPoll = await poll.save()
+
+  return updatedPoll
+}
+
+const commentAPoll = async (id: string, text: string) => {
+  const poll = await Poll.findById(id)
+  if (!poll) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Poll not found')
+  }
+  const newComment: IComment = {
+    text: text,
+    createdAt: new Date(), // Use Date as expected
+  }
+
+  // Add the comment to the poll
+  poll.comments.push(newComment)
+
+  const updatedPoll = await poll.save()
+
   return updatedPoll
 }
 
@@ -130,5 +161,7 @@ export const PollsServices = {
   getSinglePoll,
   getPollResult,
   voteAPoll,
+  reactAPoll,
+  commentAPoll,
   deletePoll,
 }

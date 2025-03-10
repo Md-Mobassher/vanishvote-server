@@ -17,3 +17,11 @@ export const createPollsValidationSchema = z.object({
 export const votePollValidationSchema = z.object({
   optionIndex: z.number().min(0, 'Invalid option index'),
 })
+
+export const reactPollSchema = z.object({
+  reaction: z.enum(['🔥', '👍']),
+})
+
+export const commentPollSchema = z.object({
+  text: z.string(),
+})

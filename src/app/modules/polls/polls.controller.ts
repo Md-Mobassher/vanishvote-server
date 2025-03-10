@@ -58,7 +58,32 @@ const voteAPoll = catchAsync(async (req, res) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Poll results is retrieved succesfully',
+    message: 'Vote under a poll is succesfull',
+    data: result,
+  })
+})
+
+const reactAPoll = catchAsync(async (req, res) => {
+  const { id } = req.params
+  const { reaction } = req.body
+  const result = await PollsServices.reactAPoll(id, reaction)
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Succesfully react a poll',
+    data: result,
+  })
+})
+const commentAPoll = catchAsync(async (req, res) => {
+  const { id } = req.params
+  const { text } = req.body
+  const result = await PollsServices.commentAPoll(id, text)
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Succesfully react a poll',
     data: result,
   })
 })
@@ -81,5 +106,7 @@ export const PollsControllers = {
   getSinglePoll,
   getPollResults,
   voteAPoll,
+  reactAPoll,
+  commentAPoll,
   deletePoll,
 }

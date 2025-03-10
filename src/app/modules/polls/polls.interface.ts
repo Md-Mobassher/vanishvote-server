@@ -5,6 +5,11 @@ export interface IOption {
   votes: number
 }
 
+export interface IComment {
+  text: string
+  createdAt: Date
+}
+
 export interface IPoll extends Document {
   question: string
   options: IOption[]
@@ -15,5 +20,5 @@ export interface IPoll extends Document {
     fire: number
     like: number
   }
-  comments: Comment[]
+  comments: IComment[]
 }
