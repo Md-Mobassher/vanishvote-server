@@ -6,7 +6,7 @@ import Poll from './polls.model'
 
 const createPoll = async (payload: IPoll) => {
   const result = await Poll.create(payload)
-  const link = `${process.env.FRONTEND_URL_LIVE}/polls/${result._id}`
+  const link = `https://vanishvote-frontend-tau.vercel.app/polls/${result._id}`
   return {
     data: result,
     link: link,
@@ -19,20 +19,13 @@ const getAllPoll = async () => {
 }
 
 const getSinglePoll = async (id: string) => {
-  const result = await Poll.findById(id).select('question options').lean()
+  const result = await Poll.findById(id)
 
   if (!result) {
     throw new AppError(httpStatus.NOT_FOUND, 'This Poll is not found')
   }
-  const formattedResult = {
-    question: result.question,
-    options: result.options.map((option) => ({
-      choice: option.choice,
-      votes: option.votes,
-    })),
-  }
 
-  return formattedResult
+  return result
 }
 
 const getPollResult = async (id: string) => {
