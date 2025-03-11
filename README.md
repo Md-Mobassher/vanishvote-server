@@ -2,7 +2,7 @@
 
 ## Deployment
 
-- **Live Link**: [Live server link]()
+- **Live Link**: [Live server link](https://vanishvote-server.vercel.app)
 
 ---
 

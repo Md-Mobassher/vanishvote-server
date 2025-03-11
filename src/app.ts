@@ -14,8 +14,8 @@ app.use(cookieParser())
 app.use(
   cors({
     origin: [
-      `${process.env.FRONTEND_URL_LIVE}`,
-      `${process.env.FRONTEND_URL_LOCAL}`,
+      `http://localhost:3000`,
+      `https://vanishvote-frontend-tau.vercel.app`,
     ],
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
